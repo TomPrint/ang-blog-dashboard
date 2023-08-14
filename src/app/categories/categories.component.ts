@@ -37,7 +37,6 @@ export class CategoriesComponent {
       .catch((error) => {
         console.log('Error:', error);
       });
-      
 
   }
 
