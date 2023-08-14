@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {Firestore, collection, addDoc, doc, setDoc} from '@angular/fire/firestore';
+import {Firestore, collection, addDoc} from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-categories',
@@ -16,23 +16,32 @@ export class CategoriesComponent {
     let categoryData = {
       category: formData.value.category,
       status: 'active'
-    }
+    };
 
     let subCategoryData = {
       subCategory: 'subCategory1'
-    }
+    };
+
+    let thirdLayerData = {
+      thirdLayer: 'thirdLayer1'
+    };
 
     const collectionInstance = collection(this.firestore, 'categories');
     addDoc(collectionInstance, categoryData)
       .then((categoryDocRef) => {
         console.log('Category Data Saved Successfully');
 
-        
         const subCollectionRef = collection(categoryDocRef, 'subCategories');
         return addDoc(subCollectionRef, subCategoryData);
       })
-      .then(() => {
+      .then((subCategoryDocRef) => {
         console.log('SubCategory Data Saved Successfully');
+
+        const thirdLayerCollectionRef = collection(subCategoryDocRef, 'thirdLayer');
+        return addDoc(thirdLayerCollectionRef, thirdLayerData);
+      })
+      .then(() => {
+        console.log('Third Layer Data Saved Successfully');
       })
       .catch((error) => {
         console.log('Error:', error);
