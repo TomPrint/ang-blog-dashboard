@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import {Firestore, collection, addDoc} from '@angular/fire/firestore';
+import { CategoriesService } from '../services/categories.service';
+import { Category } from '../models/category';
 
 @Component({
   selector: 'app-categories',
@@ -8,44 +9,18 @@ import {Firestore, collection, addDoc} from '@angular/fire/firestore';
 })
 export class CategoriesComponent {
 
-  constructor(private firestore: Firestore){}
+  constructor(private categoryService: CategoriesService){}
 
 
   onSubmit(formData: any) {
 
-    let categoryData = {
-      category: formData.value.category,
-      status: 'active'
+    let categoryData: Category = {
+      category: formData.value.category
     };
 
-    let subCategoryData = {
-      subCategory: 'subCategory1'
-    };
+    this.categoryService.saveData(categoryData);
 
-    let thirdLayerData = {
-      thirdLayer: 'thirdLayer1'
-    };
 
-    const collectionInstance = collection(this.firestore, 'categories');
-    addDoc(collectionInstance, categoryData)
-      .then((categoryDocRef) => {
-        console.log('Category Data Saved Successfully');
-
-        const subCollectionRef = collection(categoryDocRef, 'subCategories');
-        return addDoc(subCollectionRef, subCategoryData);
-      })
-      .then((subCategoryDocRef) => {
-        console.log('SubCategory Data Saved Successfully');
-
-        const thirdLayerCollectionRef = collection(subCategoryDocRef, 'thirdLayer');
-        return addDoc(thirdLayerCollectionRef, thirdLayerData);
-      })
-      .then(() => {
-        console.log('Third Layer Data Saved Successfully');
-      })
-      .catch((error) => {
-        console.log('Error:', error);
-      });
 
   }
 
