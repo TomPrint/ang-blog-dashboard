@@ -14,6 +14,10 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { provideStorage,getStorage } from '@angular/fire/storage';
 import { CategoriesComponent } from './categories/categories.component';
 import {FormsModule} from '@angular/forms';
+import {ToastrModule} from 'ngx-toastr';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { AllPostComponent } from './posts/all-post/all-post.component';
+import { NewPostComponent } from './posts/new-post/new-post.component';
 
 @NgModule({
   declarations: [
@@ -21,12 +25,16 @@ import {FormsModule} from '@angular/forms';
     HeaderComponent,
     FooterComponent,
     DashboardComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    AllPostComponent,
+    NewPostComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ToastrModule.forRoot(),
+    BrowserAnimationsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),

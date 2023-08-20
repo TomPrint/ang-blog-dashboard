@@ -1,0 +1,64 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center mb-4">
+            <h3 class="text-theme-primary">Add New Post</h3>
+            <p class="mb-5">You can add your new post here</p>
+        </div>
+    </div>
+    <form>
+        <div class="row">
+            <div class="col-md-7">
+                <div class="card shadow-effect mb-4">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" class="form-control" id="title">
+                        </div>
+                        <div class="form-group">
+                            <label for="permalink">Permalink</label>
+                            <input type="text" class="form-control" id="permalink">
+                        </div>
+                        <div class="form-group">
+                            <label for="excerpt">Excerpt</label>
+                            <textarea cols="30" rows="5" class="form-control" id="excerpt"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card shadow-effect mb-4">
+                    <div class="card-body">
+                        <label for="category">Please select a post category</label>
+                        <select class="form-control" id="category">
+                            <option value="" disabled selected>Please select a category</option>
+                        </select>
+                        <div class="form-group mt-3">
+                            <label for="postImage">Post Image</label>
+                            <input type="file" class="form-control" id="postImage">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card shadow-effect">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="content">Content</label>
+                            <textarea cols="30" rows="10" class="form-control" id="content"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-3">
+            <div class="col-md-12 text-center">
+                <button class="btn btn-info bg-theme text-white">Save Post</button>
+                <a class="btn btn-warning mx-2" routerLink="/posts">Back to Post</a>
+            </div>
+        </div>
+    </form>
+</div>
