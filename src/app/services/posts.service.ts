@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, getDocs, query, updateDoc, doc, deleteDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, collectionData, getDocs, query, updateDoc, doc, deleteDoc, where, DocumentData, DocumentReference, docData } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL, getStorage } from '@angular/fire/storage';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Post } from '../models/post';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -9,9 +13,13 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class PostsService {
 
-  constructor(private storage: Storage, private firestore: Firestore, private toastr: ToastrService) { }
+  constructor(
+    private storage: Storage, 
+    private firestore: Firestore, 
+    private toastr: ToastrService, 
+    private router: Router) {}
 
-  uploadImage(selectedImage: any, postData: any) {
+  uploadImage(selectedImage: any, postData: any, formStatus: any, id: any) {
     const filePath = `postIMG/${Date.now()}`;
     console.log(filePath);
 
@@ -25,21 +33,63 @@ export class PostsService {
       })
       .then(url => {
         postData.postImgPath = url;
-        console.log(postData);
+        console.log(postData); 
 
-        // Save post data to Firestore
-        return addDoc(collection(this.firestore, 'posts'), postData);
+        if(formStatus =="Edit"){
+          this.updateData(id, postData)
+        } else{
+          // callback for saveData method
+          this.saveData(postData);   
+        }     
       })
+
+  }
+
+    saveData(postData: any) {
+      return addDoc(collection(this.firestore, 'posts'), postData)
       .then(() => {
-        console.log('Post Data Saved Successfully');
+      
         this.toastr.success('Post Saved Successfully');
+        this.router.navigate(['/posts']);
+        
       })
       .catch(error => {
         console.error('Error uploading file:', error);
         this.toastr.error('Error uploading post.');
       });
-  }
-}
+    }
 
+    getData(): Observable<Post[]> {
+      const collectionInstance = collection(this.firestore, 'posts');
+      const queryRef = query(collectionInstance);
+  
+      return collectionData(queryRef, { idField: 'id' }).pipe(
+        map(querySnapshot => querySnapshot as Post[])
+      );
+    }
+
+    getDataById(id: string): Observable<Post> {
+      const docRef = doc(this.firestore, `posts/${id}`);
+      return docData(docRef).pipe(
+        map((post: any) => {
+          if (post) {
+            return { ...post, id: id }; // Set the id property correctly
+          } else {
+            return console.error("Erorr - id does not exist");
+            ; 
+          }
+        })
+      );
+    }
+    
+    updateData(id: string, postData: any){
+      const docRef = doc(this.firestore, `posts/${id}`)
+      return updateDoc (docRef, postData).then(()=>{
+        this.toastr.success('Post Updated Successfully');
+        this.router.navigate(['/posts']);
+      })
+    }
+
+  }
 
 
