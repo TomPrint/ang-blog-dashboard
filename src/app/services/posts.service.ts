@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, addDoc, collectionData, getDocs, query, updateDoc, doc, deleteDoc, where, DocumentData, DocumentReference, docData } from '@angular/fire/firestore';
-import { Storage, ref, uploadBytes, getDownloadURL, getStorage } from '@angular/fire/storage';
+import { Storage, ref, uploadBytes, getDownloadURL, getStorage, deleteObject } from '@angular/fire/storage';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -88,6 +88,26 @@ export class PostsService {
         this.toastr.success('Post Updated Successfully');
         this.router.navigate(['/posts']);
       })
+    }
+
+    deleteImage(postImgPath: any, id: string){
+      const storageRef = ref(this.storage, postImgPath);
+      return deleteObject(storageRef).then(()=>{
+        this.deleteData(id)
+
+      })
+    }
+
+    deleteData(id: string): void {
+      const docInstance = doc(this.firestore, 'posts', id);
+      deleteDoc(docInstance)
+        .then(() => {
+          console.log('Post Data Deleted Successfully');
+          this.toastr.warning('Post Deleted Successfully');
+        })
+        .catch((error) => {
+          console.error('Error deleting Post:', error);
+        });
     }
 
   }

@@ -22,4 +22,10 @@ export class AllPostComponent implements OnInit {
       console.log(this.posts);
     });
   }
+
+  onDelete(postImgPath: string, id: any)
+  {   if (confirm('Are you sure you want to delete this category?')) {
+    this.postService.deleteImage(postImgPath, id);} 
+  }
+
 }

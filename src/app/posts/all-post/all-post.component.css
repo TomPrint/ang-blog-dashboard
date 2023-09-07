@@ -1,0 +1,6 @@
+.excerpt-text {
+    max-width: 500px; /* Adjust this value to your desired maximum width */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
