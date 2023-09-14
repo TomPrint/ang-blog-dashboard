@@ -5,8 +5,10 @@
                 <div class="card-body text-center">
                     <h3 class="text-theme-center">All Blog Posts</h3>
                     <p class="mb-2">You can manage your blog posts here.</p>
-                    <button class="btn btn-info bg-theme text-white" routerLink="/posts/new">Add New Post</button>
-                    <button class="btn btn-warning mx-2" routerLink="/">Back to Dashboard</button>
+                    <div class="btn-group">
+                        <button class="btn btn-info bg-theme text-white text-size" routerLink="/posts/new">Add New Post</button>
+                        <button class="btn btn-warning text-size" routerLink="/">Back to Dashboard</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -16,8 +18,8 @@
         <div class="col-12">
             <div class="card shadow">
                 <div class="card-body">
-                    <div class="table-responsive"> <!-- Add this for responsive table -->
-                        <table class="table table-bordered table-hover">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover text-size">
                             <thead>
                                 <tr>
                                     <th>No.</th>
@@ -40,8 +42,20 @@
                                     <td>{{ post.category.category }}</td>
                                     <td>{{ post.createdAt | date }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning" routerLink="/posts/new" [queryParams]="{ id: post.id }">Edit</button>
-                                        <button class="btn btn-sm btn-danger mt-1" (click)="onDelete(post.postImgPath, post.id)">Delete</button>
+                                        <div class="btn-group">
+                                            <button class="btn btn-warning text-size" routerLink="/posts/new" [queryParams]="{ id: post.id }">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                            <button class="btn btn-danger text-size" (click)="onDelete(post.postImgPath, post.id)">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
+                                            <button *ngIf="!post.isFeatured" class="btn btn-success text-size" (click)="onFeatured(post.id, true)">
+                                                <i class="fas fa-star"></i> Mark Featured
+                                            </button>
+                                            <button *ngIf="post.isFeatured" class="btn btn-info text-size" (click)="onFeatured(post.id, false)">
+                                                <i class="fas fa-star"></i> Remove Featured
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>

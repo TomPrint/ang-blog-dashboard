@@ -110,6 +110,20 @@ export class PostsService {
         });
     }
 
+    markFeatured(id: any, featuredData: any): Promise<void> {
+      const docRef = doc(this.firestore, 'posts', id);
+    
+      // Update the 'isFeatured' field of the document
+      return updateDoc(docRef, featuredData)
+        .then(() => {
+          this.toastr.info('Featured status changed');
+        })
+        .catch((error) => {
+          console.error('Error marking post as featured:', error);
+          this.toastr.error('Error marking post as featured.');
+        });
+    }
+
   }
 
 
